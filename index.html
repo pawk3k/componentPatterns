@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <title>reveal.js</title>
+
+    <link rel="stylesheet" href="dist/reset.css" />
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/black.css" />
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" />
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- <section>
+          <h6>Component patterns</h6>
+          <div>Headless components</div>
+          🤯
+          <aside class="notes">kek</aside>
+        </section> -->
+        <section data-markdown>
+          <h2 data-id="code-title">Pretty Code</h2>
+
+          <textarea data-template>
+            ## Slide 1
+            A paragraph with some text and a [link](http://hakim.se).
+            ---
+            ## Slide 2
+            ---
+            ## Slide 3
+            ```jsx 
+            function Example() { 
+            const [parentEmotion, setEmotion] =
+            useState(0); return ( `<Child emotion="{parentEmotion}" />` ); } 
+            ```
+          </textarea>
+
+          <p>
+            Code syntax highlighting courtesy of
+            <a href="https://highlightjs.org/usage/">highlight.js</a>.
+          </p>
+        </section>
+        <section>
+          Render Prop pattern
+          <section>
+            <p class="fragment">Fade in</p>
+            <p class="fragment fade-out">Fade out</p>
+            <p class="fragment highlight-red">Highlight red</p>
+            <p class="fragment fade-in-then-out">Fade in, then out</p>
+            <p class="fragment fade-up">Slide up while fading in</p>
+            <pre><code>
+          </code></pre>
+          </section>
+          <section>
+            <div id="injected-react-content"></div>
+          </section>
+        </section>
+      </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+
+    <!-- import the react libraray -->
+    <script
+      src="https://unpkg.com/react@17/umd/react.development.js"
+      crossorigin
+      defer
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+      defer
+      crossorigin
+    ></script>
+
+    <!-- load AMD runtime to support transpiled modules -->
+    <script src="https://unpkg.com/@babel/standalone@7.4.4/babel.js"></script>
+
+    <!-- setup react root component other components -->
+    <script type="text/babel">
+      const { useState } = React;
+
+      class RootComponent extends React.Component {
+        render() {
+          return <Guy />;
+        }
+      }
+      const EmotionalState = ({ render }) => {
+        const [emotion, setEmotion] = useState("sad");
+
+        return (
+          <div className="absolute bg-white w-full flex flex-col text-center">
+            <div className="flex mx-auto justify-center gap-5 w-40">
+              <button type="button" onClick={() => setEmotion("happy")}>
+                😃
+              </button>
+              <button type="button" onClick={() => setEmotion("sad")}>
+                😭
+              </button>
+            </div>
+            <div className="w-full">
+              <span className="text-9xl">🏦</span>
+            </div>
+            {render(emotion)}
+          </div>
+        );
+      };
+
+      const Guy = () => (
+        <EmotionalState render={(emotion) => <div>{emotion}</div>} />
+      );
+
+      class MyComponent extends React.Component {
+        render() {
+          return <div>This is a simple component</div>;
+        }
+      }
+
+      const domContainer = document.querySelector("#injected-react-content");
+      ReactDOM.render(React.createElement(RootComponent), domContainer);
+    </script>
+    <script>
+      // More info about initialization & config:
+      // - https://revealjs.com/initialization/
+      // - https://revealjs.com/config/
+      Reveal.initialize({
+        // Learn about plugins: https://revealjs.com/plugins/
+        // highlight: {
+        //   beforeHighlight: (hljs) => hljs.registerLanguage("javascriptreact"),
+        // },
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+      });
+    </script>
+  </body>
+</html>
