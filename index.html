@@ -19,47 +19,137 @@
   <body>
     <div class="reveal">
       <div class="slides">
-        <!-- <section>
+        <section >
           <h6>Component patterns</h6>
           <div>Headless components</div>
           🤯
           <aside class="notes">kek</aside>
-        </section> -->
-        <section data-markdown>
-          <h2 data-id="code-title">Pretty Code</h2>
-
-          <textarea data-template>
-            ## Slide 1
-            A paragraph with some text and a [link](http://hakim.se).
-            ---
-            ## Slide 2
-            ---
-            ## Slide 3
-            ```jsx 
-            function Example() { 
-            const [parentEmotion, setEmotion] =
-            useState(0); return ( `<Child emotion="{parentEmotion}" />` ); } 
-            ```
-          </textarea>
-
-          <p>
-            Code syntax highlighting courtesy of
-            <a href="https://highlightjs.org/usage/">highlight.js</a>.
-          </p>
         </section>
         <section>
-          Render Prop pattern
+          <section data-markdown>
+            <h1>kek</h1>
+            <textarea data-template>
+            ## Naive method
+            ```jsx 
+            function Example() { 
+
+              const [parentEmotion, setEmotion] = useState('happy') 
+
+              return ( <Child emotion={parentEmotion} /> ); } 
+            ```
+          </textarea
+            >
+          </section>
+          <section data-markdown="">
+            <textarea data-template>
+            ## Child component 
+            ```jsx 
+            const Child = ({ emotion }) => (
+              <span>
+                {emotion === "happy" ? " 💆🏻️" : "🙍🏻️"}
+                </span>
+            ); ```
+            </textarea>
+          </section>
           <section>
-            <p class="fragment">Fade in</p>
+            <div id="react-component-2"></div>
+          </section>
+          <section>
+            <h4>Problems:</h4>
+            <ul>
+              <li>Props pollution</li>
+            </ul>
+          </section>
+        </section>
+        <section >
+          <!-- <section data-markdown>
+            <textarea data-template>
+
+## Render prop method
+##### Parent
+```jsx
+function Parent(render) {
+  const [parentEmotion, setEmotion] = useState('happy');
+  return render({ emotion });
+}
+```
+
+              </textarea
+            >
+          </section> -->
+          <section data-markdown>
+            <textarea data-template>
+
+## Render prop method
+##### Parent
+```jsx
+function Parent({ renderWithState }) {
+
+  const [parentEmotion, setEmotion] = useState('happy');
+
+  return renderWithState(parentEmotion);
+
+}
+```
+
+              </textarea
+            >
+          </section>
+          <section>
+            Where does that pattern come from?
+            <p>
+              Lest take a look on <em>Input</em> element that is with us for a while</code>
+            </p>
+            <aside class="notes">
+              I think this pattern might come from the roots of web development More precisely from
+              html.
+            </aside>
+          </section>
+          <section data-markdown="">
+
+            <textarea data-template>
+              ## Input element written in React way
+```jsx
+                🙀🙀🙀
+
+<input onChange={(event)=>console.log(event)} />
+
+                🙀🙀🙀
+
+```
+              </textarea>
+              <aside class="notes">
+                 React props are just wrappers over native html attributes and work same as corresponding attributes in most cases
+                </aside>  
+          </section>
+          <section data-markdown>
+            <textarea data-template>
+```jsx
+function Example() {
+  return (
+    <Parent
+      renderWithState={(emotion) => (
+        <>
+          <Child emotion={emotion} />
+          <Child emotion={!emotion} />
+          <Child emotion={emotion} />
+        </>
+      )}
+    />
+  );
+}
+
+```
+</textarea>
+          </section>
+          <!-- <p class="fragment">Fade in</p>
             <p class="fragment fade-out">Fade out</p>
             <p class="fragment highlight-red">Highlight red</p>
             <p class="fragment fade-in-then-out">Fade in, then out</p>
-            <p class="fragment fade-up">Slide up while fading in</p>
-            <pre><code>
-          </code></pre>
-          </section>
+            <p class="fragment fade-up">Slide up while fading in</p> -->
+
           <section>
-            <div id="injected-react-content"></div>
+            <div id="react-component-1"></div>
           </section>
         </section>
       </div>
@@ -71,11 +161,7 @@
     <script src="plugin/highlight/highlight.js"></script>
 
     <!-- import the react libraray -->
-    <script
-      src="https://unpkg.com/react@17/umd/react.development.js"
-      crossorigin
-      defer
-    ></script>
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin defer></script>
     <script
       src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
       defer
@@ -95,15 +181,15 @@
         }
       }
       const EmotionalState = ({ render }) => {
-        const [emotion, setEmotion] = useState("sad");
+        const [emotion, setEmotion] = useState('sad');
 
         return (
           <div className="absolute bg-white w-full flex flex-col text-center">
             <div className="flex mx-auto justify-center gap-5 w-40">
-              <button type="button" onClick={() => setEmotion("happy")}>
+              <button type="button" onClick={() => setEmotion('happy')}>
                 😃
               </button>
-              <button type="button" onClick={() => setEmotion("sad")}>
+              <button type="button" onClick={() => setEmotion('sad')}>
                 😭
               </button>
             </div>
@@ -114,19 +200,49 @@
           </div>
         );
       };
-
-      const Guy = () => (
-        <EmotionalState render={(emotion) => <div>{emotion}</div>} />
+      const Child = ({ emotion }) => (
+        <span className="text-9xl">{emotion === 'happy' ? ' 💆🏻️' : '🙍🏻️'}</span>
       );
-
-      class MyComponent extends React.Component {
-        render() {
-          return <div>This is a simple component</div>;
-        }
+      function Parent({ renderWithState }) {
+        const [parentEmotion, setEmotion] = useState('happy');
+        return renderWithState(parentEmotion);
       }
+      function Example() {
+        return (
+          <Parent
+            renderWithState={(emotion) => (
+              <>
+                <Child emotion={emotion} />
+                <Child emotion={!emotion} />
+                <Child emotion={emotion} />
+              </>
+            )}
+          />
+        );
+      }
+      const Guy = () => <EmotionalState render={(emotion) => <div>{emotion}</div>} />;
 
-      const domContainer = document.querySelector("#injected-react-content");
-      ReactDOM.render(React.createElement(RootComponent), domContainer);
+      const ParentChild = () => {
+        const [parentEmotion, setParentEmotion] = useState('happy');
+
+        return (
+          <div>
+            <Child emotion={parentEmotion} />
+            <button
+              onClick={() =>
+                setParentEmotion((prevEmotion) => (prevEmotion == 'happy' ? 'sad' : 'happy'))
+              }
+            >
+              toggle emotion
+            </button>
+          </div>
+        );
+      };
+
+      const domContainer1 = document.querySelector('#react-component-1');
+      const domContainer2 = document.querySelector('#react-component-2');
+      ReactDOM.render(React.createElement(Example), domContainer1);
+      ReactDOM.render(React.createElement(ParentChild), domContainer2);
     </script>
     <script>
       // More info about initialization & config:
