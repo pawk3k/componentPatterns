@@ -19,12 +19,30 @@
   <body>
     <div class="reveal">
       <div class="slides">
-        <section >
+        <section>
+          <!-- import html from other file-->
+          <object type="text/html" data="slide1.html">
+
+
+        </section>
+        <section ><section>
           <h6>Component patterns</h6>
           <div>Headless components</div>
           🤯
           <aside class="notes">kek</aside>
         </section>
+        <section>
+          Ways to structure your components
+          <div>
+  🌌
+          </div>
+        </section>
+      </section>
+      <section>
+  <section>
+       Let's try to overengineer dialog component
+  </section>
+      </section>
         <section>
           <section data-markdown>
             <h1>kek</h1>
@@ -62,7 +80,7 @@
           </section>
         </section>
         <section >
-          <!-- <section data-markdown>
+          <section data-markdown>
             <textarea data-template>
 
 ## Render prop method
@@ -76,7 +94,7 @@ function Parent(render) {
 
               </textarea
             >
-          </section> -->
+          </section>
           <section data-markdown>
             <textarea data-template>
 
@@ -91,7 +109,6 @@ function Parent({ renderWithState }) {
 
 }
 ```
-
               </textarea
             >
           </section>
@@ -172,87 +189,9 @@ function Example() {
     <script src="https://unpkg.com/@babel/standalone@7.4.4/babel.js"></script>
 
     <!-- setup react root component other components -->
-    <script type="text/babel">
-      const { useState } = React;
-
-      class RootComponent extends React.Component {
-        render() {
-          return <Guy />;
-        }
-      }
-      const EmotionalState = ({ render }) => {
-        const [emotion, setEmotion] = useState('sad');
-
-        return (
-          <div className="absolute bg-white w-full flex flex-col text-center">
-            <div className="flex mx-auto justify-center gap-5 w-40">
-              <button type="button" onClick={() => setEmotion('happy')}>
-                😃
-              </button>
-              <button type="button" onClick={() => setEmotion('sad')}>
-                😭
-              </button>
-            </div>
-            <div className="w-full">
-              <span className="text-9xl">🏦</span>
-            </div>
-            {render(emotion)}
-          </div>
-        );
-      };
-      const Child = ({ emotion }) => (
-        <span className="text-9xl">{emotion === 'happy' ? ' 💆🏻️' : '🙍🏻️'}</span>
-      );
-      function Parent({ renderWithState }) {
-        const [parentEmotion, setEmotion] = useState('happy');
-        return renderWithState(parentEmotion);
-      }
-      function Example() {
-        return (
-          <Parent
-            renderWithState={(emotion) => (
-              <>
-                <Child emotion={emotion} />
-                <Child emotion={!emotion} />
-                <Child emotion={emotion} />
-              </>
-            )}
-          />
-        );
-      }
-      const Guy = () => <EmotionalState render={(emotion) => <div>{emotion}</div>} />;
-
-      const ParentChild = () => {
-        const [parentEmotion, setParentEmotion] = useState('happy');
-
-        return (
-          <div>
-            <Child emotion={parentEmotion} />
-            <button
-              onClick={() =>
-                setParentEmotion((prevEmotion) => (prevEmotion == 'happy' ? 'sad' : 'happy'))
-              }
-            >
-              toggle emotion
-            </button>
-          </div>
-        );
-      };
-
-      const domContainer1 = document.querySelector('#react-component-1');
-      const domContainer2 = document.querySelector('#react-component-2');
-      ReactDOM.render(React.createElement(Example), domContainer1);
-      ReactDOM.render(React.createElement(ParentChild), domContainer2);
-    </script>
+    <script type="text/babel" src="react-components.js"></script>
     <script>
-      // More info about initialization & config:
-      // - https://revealjs.com/initialization/
-      // - https://revealjs.com/config/
       Reveal.initialize({
-        // Learn about plugins: https://revealjs.com/plugins/
-        // highlight: {
-        //   beforeHighlight: (hljs) => hljs.registerLanguage("javascriptreact"),
-        // },
         plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
       });
     </script>
